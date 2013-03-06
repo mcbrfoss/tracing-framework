@@ -21,6 +21,8 @@ goog.require('goog.soy');
 goog.require('goog.style');
 goog.require('wtf.app.ui.FramePainter');
 goog.require('wtf.app.ui.MarkPainter');
+goog.require('wtf.app.ui.nav.FpsStatsBox');
+goog.require('wtf.app.ui.nav.GcStatsBox');
 goog.require('wtf.app.ui.nav.HeatmapPainter');
 goog.require('wtf.app.ui.nav.TimelinePainter');
 goog.require('wtf.app.ui.nav.navbar');
@@ -87,6 +89,17 @@ wtf.app.ui.nav.Navbar = function(documentView, parentElement) {
   this.tooltip_ = new wtf.ui.Tooltip(dom);
   this.registerDisposable(this.tooltip_);
   this.setTooltip(this.tooltip_);
+
+  /**
+   * Statistics boxes.
+   * @type {!Array.<!wtf.app.ui.StatsBox>}
+   * @private
+   */
+  this.statsBoxes_ = [];
+  var boxes = this.getChildElement(goog.getCssName('boxes'));
+  this.statsBoxes_.push(new wtf.app.ui.nav.FpsStatsBox(db, boxes, dom));
+  this.statsBoxes_.push(new wtf.app.ui.nav.GcStatsBox(db, boxes, dom));
+  goog.array.forEach(this.statsBoxes_, this.registerDisposable, this);
 
   var paintContext = new wtf.ui.Painter(this.navbarCanvas_);
   this.setPaintContext(paintContext);
@@ -317,6 +330,11 @@ wtf.app.ui.nav.Navbar.prototype.setupView_ = function(view) {
  */
 wtf.app.ui.nav.Navbar.prototype.layoutInternal = function() {
   goog.base(this, 'layoutInternal');
+
+  // Update children.
+  for (var n = 0; n < this.statsBoxes_.length; n++) {
+    this.statsBoxes_[n].layout();
+  }
 
   // Invalidate all views to update their positions.
   var doc = this.documentView_.getDocument();
