@@ -14,6 +14,10 @@ consumption. Once ready, much of the functionality will be available via
 browser extensions and embeddable minified js files, but for now they aren't
 going to be published.
 
+<a href="https://docs.google.com/a/google.com/presentation/d/1PVbyBpBbrheVrbHE7HJr2JntUSeirEY7FcQ0s2mb4Ts/pub?start=false&loop=false&delayms=3000">
+![](http://paulirish.com/i/1ce9e0.png)
+</a>
+
 ## Setup
 
 See [building](https://github.com/google/tracing-framework/blob/master/docs/building.md) for instructions and
